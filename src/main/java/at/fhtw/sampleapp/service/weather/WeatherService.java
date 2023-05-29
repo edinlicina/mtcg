@@ -20,7 +20,7 @@ public class WeatherService implements Service {
             request.getPathParts().size() > 1) {
             return this.weatherController.getWeather(request.getPathParts().get(1));
         } else if (request.getMethod() == Method.GET) {
-            return this.weatherController.getWeather();
+            return this.weatherController.getWeatherPerRepository();
             //return this.weatherController.getWeatherPerRepository();
         } else if (request.getMethod() == Method.POST) {
             return this.weatherController.addWeather(request);
