@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 public class Weather {
     @JsonAlias({"id"})
     private Integer id;
+    @JsonAlias({"region"})
+    private String region;
     @JsonAlias({"city"})
     private String city;
     @JsonAlias({"temperature"})
@@ -13,8 +15,9 @@ public class Weather {
     // Jackson needs the default constructor
     public Weather() {}
 
-    public Weather(Integer id, String city, float temperature) {
+    public Weather(Integer id, String region, String city, float temperature) {
         this.id = id;
+        this.region = region;
         this.city = city;
         this.temperature = temperature;
     }
@@ -25,6 +28,14 @@ public class Weather {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getCity() {

@@ -1,6 +1,5 @@
 package at.fhtw.httpserver.server;
 
-import at.fhtw.httpserver.server.Request;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

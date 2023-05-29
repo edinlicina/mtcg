@@ -4,8 +4,6 @@ import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
-import at.fhtw.httpserver.utils.RequestBuilder;
-import at.fhtw.httpserver.utils.Router;
 
 import java.io.BufferedReader;
 import java.io.IOException;

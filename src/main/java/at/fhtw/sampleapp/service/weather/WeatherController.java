@@ -1,14 +1,14 @@
 package at.fhtw.sampleapp.service.weather;
 
+import at.fhtw.httpserver.http.ContentType;
+import at.fhtw.httpserver.http.HttpStatus;
+import at.fhtw.httpserver.server.Request;
+import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.controller.Controller;
 import at.fhtw.sampleapp.dal.UnitOfWork;
 import at.fhtw.sampleapp.dal.repository.WeatherRepository;
 import at.fhtw.sampleapp.model.Weather;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import at.fhtw.httpserver.http.ContentType;
-import at.fhtw.httpserver.http.HttpStatus;
-import at.fhtw.httpserver.server.Request;
-import at.fhtw.httpserver.server.Response;
 
 import java.util.Collection;
 import java.util.List;

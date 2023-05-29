@@ -60,7 +60,7 @@
   </properties>
   <testcase name="testGetParamsWithId" classname="at.fhtw.httpserver.server.RequestTest" time="0.001"/>
   <testcase name="getPathname" classname="at.fhtw.httpserver.server.RequestTest" time="0"/>
-  <testcase name="testGetServiceRouteWithRoute" classname="at.fhtw.httpserver.server.RequestTest" time="0"/>
+  <testcase name="testGetServiceRouteWithRoute" classname="at.fhtw.httpserver.server.RequestTest" time="0.001"/>
   <testcase name="testGetServiceRouteWithSlash" classname="at.fhtw.httpserver.server.RequestTest" time="0"/>
   <testcase name="testGetServiceRouteWithSubRoute" classname="at.fhtw.httpserver.server.RequestTest" time="0"/>
 </testsuite>

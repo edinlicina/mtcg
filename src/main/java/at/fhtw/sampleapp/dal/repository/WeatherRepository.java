@@ -4,7 +4,6 @@ import at.fhtw.sampleapp.dal.DataAccessException;
 import at.fhtw.sampleapp.dal.UnitOfWork;
 import at.fhtw.sampleapp.model.Weather;
 
-import java.nio.file.Watchable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +33,8 @@ public class WeatherRepository {
                 Weather weather = new Weather(
                         resultSet.getInt(1),
                         resultSet.getString(2),
-                        resultSet.getInt(3));
+                        resultSet.getString(3),
+                        resultSet.getInt(4));
                 weatherRows.add(weather);
             }
 

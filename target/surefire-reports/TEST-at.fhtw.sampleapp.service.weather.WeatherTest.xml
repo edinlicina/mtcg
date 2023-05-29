@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.215" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.179" tests="3" errors="0" skipped="0" failures="0">
   <properties>
     <property name="idea.version" value="2023.1.2"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -58,7 +58,7 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="java.vendor.version" value="Temurin-17.0.7+7"/>
   </properties>
-  <testcase name="testWeatherServiceGetCompleteList" classname="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.201"/>
+  <testcase name="testWeatherServiceGetCompleteList" classname="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.164"/>
   <testcase name="testWeatherServiceGetByIdCheckString" classname="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.003"/>
-  <testcase name="testWeatherServiceGetById" classname="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.002"/>
+  <testcase name="testWeatherServiceGetById" classname="at.fhtw.sampleapp.service.weather.WeatherTest" time="0.003"/>
 </testsuite>

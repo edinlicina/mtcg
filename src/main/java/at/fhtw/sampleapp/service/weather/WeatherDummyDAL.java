@@ -10,9 +10,9 @@ public class WeatherDummyDAL {
 
     public WeatherDummyDAL() {
         weatherData = new ArrayList<>();
-        weatherData.add(new Weather(1,"Vienna", 9.f));
-        weatherData.add(new Weather(2,"Berlin", 8.f));
-        weatherData.add(new Weather(3,"Tokyo", 12.f));
+        weatherData.add(new Weather(1,"Europe","Vienna", 9.f));
+        weatherData.add(new Weather(2,"Europe","Berlin", 8.f));
+        weatherData.add(new Weather(3,"Asia","Tokyo", 12.f));
     }
 
     // GET /weather/:id

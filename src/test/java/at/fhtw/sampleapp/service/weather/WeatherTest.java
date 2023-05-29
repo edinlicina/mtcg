@@ -1,8 +1,5 @@
 package at.fhtw.sampleapp.service.weather;
 
-import at.fhtw.httpserver.http.ContentType;
-import at.fhtw.httpserver.http.HttpStatus;
-import at.fhtw.httpserver.server.Response;
 import at.fhtw.sampleapp.model.Weather;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -44,7 +41,7 @@ class WeatherTest {
         InputStream inputStream = urlConnection.getInputStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("{\"id\":1,\"city\":\"Vienna\",\"temperature\":9.0}", bufferedReader.readLine());
+        assertEquals("{\"id\":1,\"region\":\"Europe\",\"city\":\"Vienna\",\"temperature\":9.0}", bufferedReader.readLine());
 
         bufferedReader.close();
     }
