@@ -3,6 +3,7 @@ package at.fhtw;
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.httpserver.utils.Router;
 import at.fhtw.mtcg.controller.SessionController;
+import at.fhtw.mtcg.controller.UserController;
 
 import java.io.IOException;
 
@@ -19,7 +20,8 @@ public class Main {
     private static Router configureRouter()
     {
         Router router = new Router();
-        router.addService("/users", new SessionController());
+        router.addService("/sessions", new SessionController());
+        router.addService("/users", new UserController());
         return router;
     }
 }

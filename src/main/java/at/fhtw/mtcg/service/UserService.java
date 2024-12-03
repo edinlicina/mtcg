@@ -1,5 +1,6 @@
 package at.fhtw.mtcg.service;
 
+import at.fhtw.mtcg.dto.CreateUserDto;
 import at.fhtw.mtcg.dto.LoginUserDto;
 import at.fhtw.mtcg.entity.UserEntity;
 import at.fhtw.mtcg.repository.TokenRepository;
@@ -24,7 +25,7 @@ public class UserService {
             String token = tokenRepository.getTokenByUsername(dto.username);
             if (token == null) {
 
-                token = tokenRepository.createToken( dto.username);
+                token = tokenRepository.createToken(dto.username);
             }
             return token;
         }
@@ -32,6 +33,9 @@ public class UserService {
         return null;
     }
 
+    public void registerUser(CreateUserDto dto) {
+        userRepository.createUser(dto.username, dto.password);
 
+    }
 }
 

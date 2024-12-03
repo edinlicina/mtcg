@@ -5,14 +5,16 @@ import at.fhtw.mtcg.entity.UserEntity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserRepository {
     private final UnitOfWork unitOfWork;
-    public UserRepository ( ){
+
+    public UserRepository() {
         this.unitOfWork = new UnitOfWork();
     }
 
-    public UserEntity getUserByUsername(String username){
+    public UserEntity getUserByUsername(String username) {
         PreparedStatement preparedStatement;
         ResultSet result;
         try {
@@ -30,5 +32,19 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public void createUser(String username, String password) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("INSERT INTO user_data (username, password) VALUES (?,?)");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+            unitOfWork.commitTransaction();
+        } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
+            throw new RuntimeException(e);
+        }
     }
 }
