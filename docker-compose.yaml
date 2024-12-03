@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: mtcg123
+      POSTGRES_USER: edin
+      POSTGRES_DB: mtcgdb
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/init-database.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432

@@ -2,8 +2,7 @@ package at.fhtw;
 
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.httpserver.utils.Router;
-import at.fhtw.sampleapp.service.echo.EchoService;
-import at.fhtw.sampleapp.service.weather.WeatherService;
+import at.fhtw.mtcg.controller.SessionController;
 
 import java.io.IOException;
 
@@ -20,9 +19,7 @@ public class Main {
     private static Router configureRouter()
     {
         Router router = new Router();
-        router.addService("/weather", new WeatherService());
-        router.addService("/echo", new EchoService());
-
+        router.addService("/users", new SessionController());
         return router;
     }
 }
