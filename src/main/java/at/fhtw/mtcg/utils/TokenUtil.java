@@ -12,11 +12,11 @@ public class TokenUtil {
     public static String generateToken(String username) throws NoSuchAlgorithmException {
         long timestamp = System.currentTimeMillis();
         String data = username + ":" + timestamp;
-
         // Generate a simple signature
         String signature = createSignature(data);
-
-        return Base64.getEncoder().encodeToString(signature.getBytes(StandardCharsets.UTF_8));
+        // Encode the token value
+        String encoded = Base64.getEncoder().encodeToString(signature.getBytes(StandardCharsets.UTF_8));
+        return username + "-" + encoded;
     }
 
     private static String createSignature(String data) throws NoSuchAlgorithmException {

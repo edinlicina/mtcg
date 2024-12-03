@@ -6,6 +6,7 @@ import at.fhtw.httpserver.http.Method;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
+import at.fhtw.mtcg.exceptions.InvalidPasswordException;
 import at.fhtw.mtcg.dto.LoginUserDto;
 import at.fhtw.mtcg.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,13 +16,13 @@ import java.security.NoSuchAlgorithmException;
 public class SessionController extends Controller implements Service {
     private final UserService userService;
 
-    public SessionController(){
-     userService = new UserService();
+    public SessionController() {
+        userService = new UserService();
     }
 
     @Override
     public Response handleRequest(Request request) {
-        if (request.getMethod() == Method.POST ) {
+        if (request.getMethod() == Method.POST) {
             return handlePost(request);
         }
 
@@ -36,23 +37,26 @@ public class SessionController extends Controller implements Service {
         LoginUserDto dto;
         try {
 
-             dto = this.getObjectMapper().readValue(request.getBody(), LoginUserDto.class);
+            dto = this.getObjectMapper().readValue(request.getBody(), LoginUserDto.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         String token;
         try {
-             token = userService.loginUser(dto);
+            token = userService.loginUser(dto);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
+        } catch (InvalidPasswordException e) {
+            return new Response(
+                    HttpStatus.UNAUTHORIZED,
+                    ContentType.JSON,
+                    "Login failed"
+            );
         }
-
-
         return new Response(
                 HttpStatus.OK,
                 ContentType.JSON,
                 token
         );
-
     }
 }

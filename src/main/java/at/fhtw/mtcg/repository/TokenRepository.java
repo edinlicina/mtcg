@@ -34,15 +34,17 @@ public class TokenRepository {
 
     public String createToken(String username) throws NoSuchAlgorithmException {
         PreparedStatement preparedStatement;
+        String newToken = TokenUtil.generateToken(username);
         try {
             preparedStatement = unitOfWork.prepareStatement("INSERT INTO token (username, token) VALUES (?,?)");
-            String newToken = TokenUtil.generateToken(username);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, newToken);
             preparedStatement.executeUpdate();
-            return newToken;
+            unitOfWork.commitTransaction();
         } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
             throw new RuntimeException(e);
         }
+        return newToken;
     }
 }

@@ -1,6 +1,8 @@
 package at.fhtw.mtcg.dal;
 
 
+import at.fhtw.mtcg.exceptions.DataAccessException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

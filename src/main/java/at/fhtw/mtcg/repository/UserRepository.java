@@ -1,6 +1,7 @@
 package at.fhtw.mtcg.repository;
 
 import at.fhtw.mtcg.dal.UnitOfWork;
+import at.fhtw.mtcg.exceptions.NotUniqueException;
 import at.fhtw.mtcg.entity.UserEntity;
 
 import java.sql.PreparedStatement;
@@ -34,7 +35,7 @@ public class UserRepository {
         return null;
     }
 
-    public void createUser(String username, String password) {
+    public void createUser(String username, String password) throws NotUniqueException {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = unitOfWork.prepareStatement("INSERT INTO user_data (username, password) VALUES (?,?)");
@@ -44,6 +45,10 @@ public class UserRepository {
             unitOfWork.commitTransaction();
         } catch (SQLException e) {
             unitOfWork.rollbackTransaction();
+            // 23505 is the Postgres error code for violating the unique constraint
+            if ("23505".equals(e.getSQLState())) {
+                throw new NotUniqueException();
+            }
             throw new RuntimeException(e);
         }
     }
