@@ -47,4 +47,21 @@ public class TokenRepository {
         }
         return newToken;
     }
+
+    public boolean isValidToken(String token){
+        PreparedStatement preparedStatement;
+        ResultSet result;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("SELECT * FROM token WHERE token = ?");
+            preparedStatement.setString(1, token);
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

@@ -37,5 +37,9 @@ public class UserService {
     public void registerUser(CreateUserDto dto) throws NotUniqueException {
         userRepository.createUser(dto.username, dto.password);
     }
+
+    public boolean isValidToken(String token){
+        return tokenRepository.isValidToken(token);
+    }
 }
 
