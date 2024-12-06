@@ -2,7 +2,6 @@ package at.fhtw.mtcg.repository;
 
 import at.fhtw.mtcg.dal.UnitOfWork;
 import at.fhtw.mtcg.exceptions.DuplicatedCardIdException;
-import at.fhtw.mtcg.exceptions.NotUniqueException;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -30,6 +29,19 @@ public class CardRepository {
             if ("23505".equals(e.getSQLState())) {
                 throw new DuplicatedCardIdException();
             }
+            throw new RuntimeException(e);
+        }
+    }
+    public void updateUsername(String username, String cardId){
+        PreparedStatement preparedStatement;
+        try{
+            preparedStatement = unitOfWork.prepareStatement("UPDATE card SET username = ? WHERE id = ?");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, cardId);
+            preparedStatement.executeUpdate();
+            unitOfWork.commitTransaction();
+        } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
             throw new RuntimeException(e);
         }
     }

@@ -1,8 +1,8 @@
 package at.fhtw.mtcg.repository;
 
 import at.fhtw.mtcg.dal.UnitOfWork;
-import at.fhtw.mtcg.exceptions.NotUniqueException;
 import at.fhtw.mtcg.entity.UserEntity;
+import at.fhtw.mtcg.exceptions.NotUniqueException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +27,8 @@ public class UserRepository {
                 UserEntity userEntity = new UserEntity();
                 userEntity.setUsername(result.getString("username"));
                 userEntity.setPassword(result.getString("password"));
+                userEntity.setCoins(result.getInt("coins"));
+
                 return userEntity;
             }
         } catch (Exception e) {
@@ -38,7 +40,7 @@ public class UserRepository {
     public void createUser(String username, String password) throws NotUniqueException {
         PreparedStatement preparedStatement;
         try {
-            preparedStatement = unitOfWork.prepareStatement("INSERT INTO user_data (username, password) VALUES (?,?)");
+            preparedStatement = unitOfWork.prepareStatement("INSERT INTO user_data (username, password, coins) VALUES (?,?, 20)");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
@@ -52,4 +54,20 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public void updateUserCoins(int coins, String username) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("UPDATE user_data SET coins = ? WHERE username = ?");
+
+            preparedStatement.setInt(1, coins);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+            unitOfWork.commitTransaction();
+        } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
+            throw new RuntimeException(e);
+        }
+    }
 }
+

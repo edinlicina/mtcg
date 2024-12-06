@@ -64,4 +64,21 @@ public class TokenRepository {
         }
         return false;
     }
+    public String getUsernameByToken(String token){
+        PreparedStatement preparedStatement;
+        ResultSet result;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("SELECT username FROM token WHERE token = ?");
+            preparedStatement.setString(1, token);
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                return result.getString("username");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+
+    }
 }

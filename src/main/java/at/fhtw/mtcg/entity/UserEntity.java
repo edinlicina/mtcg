@@ -4,6 +4,16 @@ public class UserEntity {
     private String username;
     private String password;
 
+    private int coins ;
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -7,7 +7,6 @@ import at.fhtw.mtcg.repository.CardRepository;
 import at.fhtw.mtcg.repository.PackageRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PackageService {
 
@@ -20,15 +19,14 @@ public class PackageService {
     }
 
     public void createPackage(List<CardDto> dto) throws NotFiveCardsException, DuplicatedCardIdException {
-        if(dto.size() != 5){
-           throw new NotFiveCardsException();
+        if (dto.size() != 5) {
+            throw new NotFiveCardsException();
         }
-
+        //TODO Test if any Card has negative damage
         dto.forEach(card -> {
-           cardRepository.createCard(card.id, card.name, card.damage);
+            cardRepository.createCard(card.id, card.name, card.damage);
         });
-        packageRepository.createPackage(dto.get(0).id,dto.get(1).id,dto.get(2).id,dto.get(3).id,dto.get(4).id);
+        packageRepository.createPackage(dto.get(0).id, dto.get(1).id, dto.get(2).id, dto.get(3).id, dto.get(4).id);
 
     }
-
 }

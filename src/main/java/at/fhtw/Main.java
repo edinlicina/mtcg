@@ -2,9 +2,7 @@ package at.fhtw;
 
 import at.fhtw.httpserver.server.Server;
 import at.fhtw.httpserver.utils.Router;
-import at.fhtw.mtcg.controller.PackageController;
-import at.fhtw.mtcg.controller.SessionController;
-import at.fhtw.mtcg.controller.UserController;
+import at.fhtw.mtcg.controller.*;
 
 import java.io.IOException;
 
@@ -23,7 +21,8 @@ public class Main {
         Router router = new Router();
         router.addService("/sessions", new SessionController());
         router.addService("/users", new UserController());
-        router.addService("/packages", new PackageController());
+        router.addService("/packages", new AuthorizedController(new PackageController()));
+        router.addService("/transactions", new AuthorizedController(new TransactionController()));
         return router;
     }
 }
