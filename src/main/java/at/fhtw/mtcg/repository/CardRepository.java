@@ -1,10 +1,14 @@
 package at.fhtw.mtcg.repository;
 
 import at.fhtw.mtcg.dal.UnitOfWork;
+import at.fhtw.mtcg.entity.CardEntity;
 import at.fhtw.mtcg.exceptions.DuplicatedCardIdException;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardRepository {
 
@@ -32,9 +36,10 @@ public class CardRepository {
             throw new RuntimeException(e);
         }
     }
-    public void updateUsername(String username, String cardId){
+
+    public void updateUsername(String username, String cardId) {
         PreparedStatement preparedStatement;
-        try{
+        try {
             preparedStatement = unitOfWork.prepareStatement("UPDATE card SET username = ? WHERE id = ?");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, cardId);
@@ -44,5 +49,29 @@ public class CardRepository {
             unitOfWork.rollbackTransaction();
             throw new RuntimeException(e);
         }
+    }
+
+    public List<CardEntity> getCardsForUser(String username) {
+        List<CardEntity> cardEntityList = new ArrayList<>();
+        PreparedStatement preparedStatement;
+        ResultSet result;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("SELECT * FROM card WHERE username = ?");
+            preparedStatement.setString(1, username);
+            result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                CardEntity cardEntity = new CardEntity();
+                cardEntity.setName(result.getString("name"));
+                cardEntity.setDamage(result.getFloat("damage"));
+                cardEntity.setId(result.getString("id"));
+                cardEntityList.add(cardEntity);
+            }
+            return cardEntityList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

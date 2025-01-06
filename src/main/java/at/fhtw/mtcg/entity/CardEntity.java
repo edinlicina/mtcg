@@ -33,5 +33,8 @@ public class CardEntity {
         this.damage = damage;
     }
 
-
+    @Override
+    public String toString() {
+        return String.format("{ \"name\": \"%s\", \"damage\": \"%s\", \"id\": \"%s\" }", name, damage, id);
+    }
 }
