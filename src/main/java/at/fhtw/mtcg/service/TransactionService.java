@@ -2,6 +2,7 @@ package at.fhtw.mtcg.service;
 
 import at.fhtw.mtcg.entity.PackageEntity;
 import at.fhtw.mtcg.entity.UserEntity;
+import at.fhtw.mtcg.exceptions.NoPackagesException;
 import at.fhtw.mtcg.repository.CardRepository;
 import at.fhtw.mtcg.repository.PackageRepository;
 import at.fhtw.mtcg.repository.TokenRepository;
@@ -25,6 +26,9 @@ public class TransactionService {
     public void acquirePackage(String token) {
         //1. Put package(card) in Stack of Buyer
         PackageEntity packageEntity = packageRepository.getPackage();
+        if(packageEntity == null){
+            throw new NoPackagesException();
+        }
         //TODO test if possible without packages
         String username = tokenRepository.getUsernameByToken(token);
         cardRepository.updateUsername(username, packageEntity.getCard1());

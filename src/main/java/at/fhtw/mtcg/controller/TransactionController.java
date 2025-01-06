@@ -7,7 +7,9 @@ import at.fhtw.httpserver.server.HeaderMap;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
+import at.fhtw.mtcg.exceptions.NoPackagesException;
 import at.fhtw.mtcg.service.TransactionService;
+
 import java.util.List;
 
 public class TransactionController extends Controller implements Service {
@@ -16,14 +18,14 @@ public class TransactionController extends Controller implements Service {
     private final TransactionService transactionService;
 
     public TransactionController() {
-        transactionService =  new TransactionService();
+        transactionService = new TransactionService();
     }
 
     @Override
     public Response handleRequest(Request request) {
         List<String> pathParts = request.getPathParts();
-        boolean isTransactionPackagePath = pathParts.size()==2 && pathParts.contains("packages");
-        if (request.getMethod() == Method.POST  && isTransactionPackagePath) {
+        boolean isTransactionPackagePath = pathParts.size() == 2 && pathParts.contains("packages");
+        if (request.getMethod() == Method.POST && isTransactionPackagePath) {
             return handlePost(request);
         }
 
@@ -34,16 +36,26 @@ public class TransactionController extends Controller implements Service {
         );
     }
 
-    private Response handlePost(Request request){
+    private Response handlePost(Request request) {
 
         HeaderMap headerMap = request.getHeaderMap();
         String authorizationHeader = headerMap.getHeader("Authorization");
         String authorizationHeaderToken = authorizationHeader.substring(7);
-        transactionService.acquirePackage(authorizationHeaderToken);
+
+        try {
+            transactionService.acquirePackage(authorizationHeaderToken);
+        } catch (NoPackagesException e) {
+            return new Response(
+                    HttpStatus.NOT_FOUND,
+                    ContentType.JSON,
+                    "No packages available"
+            );
+        }
         return new Response(
                 HttpStatus.CREATED,
                 ContentType.JSON,
                 "Acquired Package"
         );
+
     }
 }
