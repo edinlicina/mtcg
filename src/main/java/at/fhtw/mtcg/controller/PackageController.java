@@ -8,6 +8,7 @@ import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
 import at.fhtw.mtcg.dto.CardDto;
 import at.fhtw.mtcg.exceptions.DuplicatedCardIdException;
+import at.fhtw.mtcg.exceptions.NegativeDamageException;
 import at.fhtw.mtcg.exceptions.NotFiveCardsException;
 import at.fhtw.mtcg.service.PackageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -61,6 +62,12 @@ public class PackageController extends Controller implements Service {
                     ContentType.JSON,
                     "Card already exists"
 
+            );
+        } catch (NegativeDamageException e) {
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    ContentType.JSON,
+                    "Negative damage not allowed"
             );
         }
         return new Response(
