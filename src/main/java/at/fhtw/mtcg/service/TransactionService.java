@@ -2,6 +2,7 @@ package at.fhtw.mtcg.service;
 
 import at.fhtw.mtcg.entity.PackageEntity;
 import at.fhtw.mtcg.entity.UserEntity;
+import at.fhtw.mtcg.exceptions.NoMoneyException;
 import at.fhtw.mtcg.exceptions.NoPackagesException;
 import at.fhtw.mtcg.repository.CardRepository;
 import at.fhtw.mtcg.repository.PackageRepository;
@@ -26,23 +27,27 @@ public class TransactionService {
     public void acquirePackage(String token) {
         //1. Put package(card) in Stack of Buyer
         PackageEntity packageEntity = packageRepository.getPackage();
-        if(packageEntity == null){
+        if (packageEntity == null) {
             throw new NoPackagesException();
         }
-        //TODO test if possible without packages
+
         String username = tokenRepository.getUsernameByToken(token);
+        UserEntity userEntity = userRepository.getUserByUsername(username);
+
+        int userCoins = userEntity.getCoins();
+        if (userCoins <= 4) {
+            throw new NoMoneyException();
+        }
+        //2. Take package out of PackagesDB
+        packageRepository.deletePackage(packageEntity.getId());
         cardRepository.updateUsername(username, packageEntity.getCard1());
         cardRepository.updateUsername(username, packageEntity.getCard2());
         cardRepository.updateUsername(username, packageEntity.getCard3());
         cardRepository.updateUsername(username, packageEntity.getCard4());
         cardRepository.updateUsername(username, packageEntity.getCard5());
-        //2. Take package out of PackagesDB
-        packageRepository.deletePackage(packageEntity.getId());
         //3. Deduct 5 coins per package from Buyer
-        UserEntity userEntity = userRepository.getUserByUsername(username);
-        //TODO Test for negative account
-        int userCoins = userEntity.getCoins();
         int afterTransactionUserCoins = userCoins - 5;
+
         userRepository.updateUserCoins(afterTransactionUserCoins, username);
 
     }

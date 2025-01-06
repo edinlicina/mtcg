@@ -7,6 +7,7 @@ import at.fhtw.httpserver.server.HeaderMap;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
+import at.fhtw.mtcg.exceptions.NoMoneyException;
 import at.fhtw.mtcg.exceptions.NoPackagesException;
 import at.fhtw.mtcg.service.TransactionService;
 
@@ -49,6 +50,12 @@ public class TransactionController extends Controller implements Service {
                     HttpStatus.NOT_FOUND,
                     ContentType.JSON,
                     "No packages available"
+            );
+        } catch (NoMoneyException e) {
+            return new Response(
+                    HttpStatus.NOT_FOUND,
+                    ContentType.JSON,
+                    "Not enough money"
             );
         }
         return new Response(
