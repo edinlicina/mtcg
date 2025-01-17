@@ -44,3 +44,22 @@ CREATE TABLE package
     FOREIGN KEY (card5) REFERENCES card (id)
 
 );
+
+CREATE TABLE deck
+(
+    id       SERIAL,
+    card1    VARCHAR NOT NULL, <
+    card2
+    VARCHAR
+    NOT
+    NULL,
+    card3    VARCHAR NOT NULL,
+    card4    VARCHAR NOT NULL,
+    username VARCHAR UNIQUE,
+    PRIMARY KEY (id),
+    FOREIGN KEY (card1) REFERENCES card (id),
+    FOREIGN KEY (card2) REFERENCES card (id),
+    FOREIGN KEY (card3) REFERENCES card (id),
+    FOREIGN KEY (card4) REFERENCES card (id),
+    FOREIGN KEY (username) REFERENCES user_data (username)
+);
