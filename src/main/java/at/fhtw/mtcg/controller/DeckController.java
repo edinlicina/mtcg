@@ -8,7 +8,10 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
 import at.fhtw.mtcg.dto.CardDto;
+import at.fhtw.mtcg.exceptions.NotFourCardsException;
 import at.fhtw.mtcg.service.DeckService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class DeckController extends Controller implements Service {
         if (request.getMethod() == Method.GET) {
             return handleGet(request);
         }
+        if (request.getMethod() == Method.PUT) {
+            return handlePut(request);
+        }
         return new Response(HttpStatus.BAD_REQUEST, ContentType.JSON, "Error");
 
 
@@ -40,4 +46,35 @@ public class DeckController extends Controller implements Service {
 
         return new Response(HttpStatus.OK, ContentType.JSON, deckService1.toString());
     }
+
+    private Response handlePut(Request request) {
+        List<String> cardsToPutInDeck;
+        try {
+
+            cardsToPutInDeck = this.getObjectMapper().readValue(request.getBody(), new TypeReference<>() {
+            });
+
+        } catch (JsonProcessingException e) {
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ContentType.JSON,
+                    "Error while parsing the request"
+            );
+        }
+        try {
+            deckService.upsertDeck(cardsToPutInDeck);
+        } catch (NotFourCardsException e) {
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    ContentType.JSON,
+                    "Not four Cards"
+            );
+        }
+        return new Response(
+                HttpStatus.ACCEPTED,
+                ContentType.JSON,
+                cardsToPutInDeck.toString()
+        );
+    }
 }
+

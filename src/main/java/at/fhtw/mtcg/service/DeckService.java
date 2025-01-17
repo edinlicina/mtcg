@@ -2,6 +2,7 @@ package at.fhtw.mtcg.service;
 
 import at.fhtw.mtcg.dto.CardDto;
 import at.fhtw.mtcg.entity.DeckEntity;
+import at.fhtw.mtcg.exceptions.NotFourCardsException;
 import at.fhtw.mtcg.repository.DeckRepository;
 import at.fhtw.mtcg.repository.TokenRepository;
 
@@ -25,4 +26,10 @@ public class DeckService {
         return listOfCardsInDeck;
     }
 
+    public void upsertDeck(List<String> cardList) {
+        if (cardList.size() != 4) {
+            throw new NotFourCardsException();
+        }
+
+    }
 }
