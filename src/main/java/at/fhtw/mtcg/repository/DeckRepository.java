@@ -33,4 +33,40 @@ public class DeckRepository {
         }
         return null;
     }
+
+    public void createDeck(String card1, String card2, String card3, String card4, String username) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("INSERT INTO deck (card1, card2, card3, card4, username) VALUES (?,?,?,?,?)");
+            preparedStatement.setString(1, card1);
+            preparedStatement.setString(2, card2);
+            preparedStatement.setString(3, card3);
+            preparedStatement.setString(4, card4);
+            preparedStatement.setString(5, username);
+            preparedStatement.executeUpdate();
+            unitOfWork.commitTransaction();
+        } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateDeck(String card1, String card2, String card3, String card4, String username) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("UPDATE deck SET card1 = ?, card2 = ?, card3 = ?, card4 = ? WHERE username = ?");
+            preparedStatement.setString(1, card1);
+            preparedStatement.setString(2, card2);
+            preparedStatement.setString(3, card3);
+            preparedStatement.setString(4, card4);
+            preparedStatement.setString(5, username);
+            preparedStatement.executeUpdate();
+            unitOfWork.commitTransaction();
+        } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
+
+            throw new RuntimeException(e);
+        }
+    }
 }

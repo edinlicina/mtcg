@@ -48,11 +48,8 @@ CREATE TABLE package
 CREATE TABLE deck
 (
     id       SERIAL,
-    card1    VARCHAR NOT NULL, <
-    card2
-    VARCHAR
-    NOT
-    NULL,
+    card1 VARCHAR NOT NULL,
+    card2 VARCHAR NOT NULL,
     card3    VARCHAR NOT NULL,
     card4    VARCHAR NOT NULL,
     username VARCHAR UNIQUE,

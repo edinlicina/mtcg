@@ -46,8 +46,12 @@ public class DeckService {
                 throw new UserNotAuthorizedException();
             }
         });
-
-
+        DeckEntity deckEntity = deckRepository.getDeckByUsername(username);
+        if (deckEntity == null) {
+            deckRepository.createDeck(cardList.get(0), cardList.get(1), cardList.get(2), cardList.get(3), username);
+        } else {
+            deckRepository.updateDeck(cardList.get(0), cardList.get(1), cardList.get(2), cardList.get(3), username);
+        }
     }
 
 }
