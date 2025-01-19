@@ -9,6 +9,7 @@ import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
 import at.fhtw.mtcg.dto.CreateUserDto;
 import at.fhtw.mtcg.dto.UpdateUserDto;
+import at.fhtw.mtcg.entity.UserEntity;
 import at.fhtw.mtcg.exceptions.NotUniqueException;
 import at.fhtw.mtcg.exceptions.UserNotAuthorizedException;
 import at.fhtw.mtcg.service.UserService;
@@ -26,6 +27,9 @@ public class UserController extends Controller implements Service {
     public Response handleRequest(Request request) {
         if (request.getMethod() == Method.POST) {
             return handlePost(request);
+        }
+        if (request.getMethod() == Method.GET) {
+            return handleGet(request);
         }
         if (request.getMethod() == Method.PUT) {
             return handlePut(request);
@@ -98,4 +102,33 @@ public class UserController extends Controller implements Service {
         );
     }
 
+    private Response handleGet(Request request) {
+        if (request.getPathParts().size() != 2) {
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    ContentType.JSON,
+                    "URL not valid"
+            );
+        }
+        HeaderMap headerMap = request.getHeaderMap();
+        String authorizationHeader = headerMap.getHeader("Authorization");
+        String authorizationHeaderToken = authorizationHeader.substring(7);
+        String userToGet = request.getPathParts().get(1);
+        UserEntity userEntity;
+        try {
+            userEntity = userService.getDataFromUser(authorizationHeaderToken, userToGet);
+
+        } catch (UserNotAuthorizedException e) {
+            return new Response(
+                    HttpStatus.FORBIDDEN,
+                    ContentType.JSON,
+                    "Access denied"
+            );
+        }
+        return new Response(
+                HttpStatus.OK,
+                ContentType.JSON,
+                userEntity.toString()
+        );
+    }
 }

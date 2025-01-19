@@ -86,5 +86,30 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public UserEntity getUserdata(String username) {
+        PreparedStatement preparedStatement;
+        ResultSet result;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("SELECT * FROM user_data WHERE username = ?");
+
+            preparedStatement.setString(1, username);
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                UserEntity userEntity = new UserEntity();
+                userEntity.setName(result.getString("name"));
+                userEntity.setImage(result.getString("image"));
+                userEntity.setBio(result.getString("bio"));
+                userEntity.setUsername(result.getString("username"));
+                userEntity.setCoins(result.getInt("coins"));
+                return userEntity;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
 }
 

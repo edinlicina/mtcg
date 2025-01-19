@@ -40,7 +40,7 @@ public class UserService {
         userRepository.createUser(dto.username, dto.password);
     }
 
-    public boolean isValidToken(String token){
+    public boolean isValidToken(String token) {
         return tokenRepository.isValidToken(token);
     }
 
@@ -50,6 +50,14 @@ public class UserService {
             throw new UserNotAuthorizedException();
         }
         userRepository.updateUser(dto.name, dto.image, dto.bio, currentUser);
+    }
+
+    public UserEntity getDataFromUser(String token, String userToGet) {
+        String username = tokenRepository.getUsernameByToken(token);
+        if (!username.equals(userToGet)) {
+            throw new UserNotAuthorizedException();
+        }
+        return userRepository.getUserdata(username);
     }
 }
 
