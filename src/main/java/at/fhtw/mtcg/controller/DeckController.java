@@ -51,6 +51,10 @@ public class DeckController extends Controller implements Service {
                     "Deck not found"
             );
         }
+        if (request.getParams().contains("format=plain")) {
+
+            return new Response(HttpStatus.OK, ContentType.PLAIN_TEXT, deck.toString());
+        }
 
         return new Response(HttpStatus.OK, ContentType.JSON, deck.toString());
     }
