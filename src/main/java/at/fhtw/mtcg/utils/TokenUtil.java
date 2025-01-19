@@ -10,13 +10,7 @@ public class TokenUtil {
     private static final String SECRET_KEY = "your_secret_key_here";
 
     public static String generateToken(String username) throws NoSuchAlgorithmException {
-        long timestamp = System.currentTimeMillis();
-        String data = username + ":" + timestamp;
-        // Generate a simple signature
-        String signature = createSignature(data);
-        // Encode the token value
-        String encoded = Base64.getEncoder().encodeToString(signature.getBytes(StandardCharsets.UTF_8));
-        return username + "-" + encoded;
+        return username + "-mtcgToken";
     }
 
     private static String createSignature(String data) throws NoSuchAlgorithmException {

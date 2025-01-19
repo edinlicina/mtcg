@@ -7,11 +7,7 @@ import at.fhtw.httpserver.server.HeaderMap;
 import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
-import at.fhtw.mtcg.dto.CardDto;
-import at.fhtw.mtcg.exceptions.CardNotFoundException;
-import at.fhtw.mtcg.exceptions.DuplicatedCardIdException;
-import at.fhtw.mtcg.exceptions.NotFourCardsException;
-import at.fhtw.mtcg.exceptions.UserNotAuthorizedException;
+import at.fhtw.mtcg.exceptions.*;
 import at.fhtw.mtcg.service.DeckService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -44,10 +40,19 @@ public class DeckController extends Controller implements Service {
         HeaderMap headerMap = request.getHeaderMap();
         String authorizationHeader = headerMap.getHeader("Authorization");
         String authorizationHeaderToken = authorizationHeader.substring(7);
+        List<String> deck;
+        try {
+            deck = deckService.getDeckForUser(authorizationHeaderToken);
 
-        List<CardDto> deckService1 = deckService.getDeckForUser(authorizationHeaderToken);
+        } catch (DeckNotFoundException e) {
+            return new Response(
+                    HttpStatus.NOT_FOUND,
+                    ContentType.JSON,
+                    "Deck not found"
+            );
+        }
 
-        return new Response(HttpStatus.OK, ContentType.JSON, deckService1.toString());
+        return new Response(HttpStatus.OK, ContentType.JSON, deck.toString());
     }
 
     private Response handlePut(Request request) {
@@ -92,7 +97,7 @@ public class DeckController extends Controller implements Service {
             return new Response(
                     HttpStatus.FORBIDDEN,
                     ContentType.JSON,
-                    "User not authorized for this Card"
+                    e.getMessage()
             );
         }
         return new Response(

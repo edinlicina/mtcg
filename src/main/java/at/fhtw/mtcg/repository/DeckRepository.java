@@ -25,6 +25,10 @@ public class DeckRepository {
 
             if (result.next()) {
                 DeckEntity deckEntity = new DeckEntity();
+                deckEntity.setCard1(result.getString("card1"));
+                deckEntity.setCard2(result.getString("card2"));
+                deckEntity.setCard3(result.getString("card3"));
+                deckEntity.setCard4(result.getString("card4"));
                 deckEntity.setUsername(result.getString("username"));
                 return deckEntity;
             }
