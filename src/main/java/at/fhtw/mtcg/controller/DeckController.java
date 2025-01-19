@@ -9,6 +9,7 @@ import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
 import at.fhtw.mtcg.dto.CardDto;
 import at.fhtw.mtcg.exceptions.CardNotFoundException;
+import at.fhtw.mtcg.exceptions.DuplicatedCardIdException;
 import at.fhtw.mtcg.exceptions.NotFourCardsException;
 import at.fhtw.mtcg.exceptions.UserNotAuthorizedException;
 import at.fhtw.mtcg.service.DeckService;
@@ -80,6 +81,12 @@ public class DeckController extends Controller implements Service {
                     ContentType.JSON,
                     "Card with Id " + e.getMessage() + " couldn't be found"
 
+            );
+        } catch (DuplicatedCardIdException e) {
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    ContentType.JSON,
+                    "Card with same Id cannot be played in the Deck"
             );
         } catch (UserNotAuthorizedException e) {
             return new Response(

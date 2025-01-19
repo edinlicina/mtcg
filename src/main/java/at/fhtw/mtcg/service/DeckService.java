@@ -4,6 +4,7 @@ import at.fhtw.mtcg.dto.CardDto;
 import at.fhtw.mtcg.entity.CardEntity;
 import at.fhtw.mtcg.entity.DeckEntity;
 import at.fhtw.mtcg.exceptions.CardNotFoundException;
+import at.fhtw.mtcg.exceptions.DuplicatedCardIdException;
 import at.fhtw.mtcg.exceptions.NotFourCardsException;
 import at.fhtw.mtcg.exceptions.UserNotAuthorizedException;
 import at.fhtw.mtcg.repository.CardRepository;
@@ -11,7 +12,9 @@ import at.fhtw.mtcg.repository.DeckRepository;
 import at.fhtw.mtcg.repository.TokenRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DeckService {
 
@@ -46,12 +49,17 @@ public class DeckService {
                 throw new UserNotAuthorizedException();
             }
         });
+        Set<String> uniqueCardList = new HashSet<String>(cardList);
+        if (uniqueCardList.size() < cardList.size()) {
+            throw new DuplicatedCardIdException();
+        }
         DeckEntity deckEntity = deckRepository.getDeckByUsername(username);
         if (deckEntity == null) {
             deckRepository.createDeck(cardList.get(0), cardList.get(1), cardList.get(2), cardList.get(3), username);
         } else {
             deckRepository.updateDeck(cardList.get(0), cardList.get(1), cardList.get(2), cardList.get(3), username);
         }
+
     }
 
 }
