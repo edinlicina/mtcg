@@ -85,6 +85,7 @@ public class CardRepository {
 
             if (result.next()) {
                 CardEntity cardEntity = new CardEntity();
+                cardEntity.setUsername(result.getString("username"));
                 cardEntity.setName(result.getString("name"));
                 cardEntity.setDamage(result.getFloat("damage"));
                 cardEntity.setId(result.getString("id"));

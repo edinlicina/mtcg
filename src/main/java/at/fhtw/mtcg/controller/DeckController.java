@@ -8,7 +8,9 @@ import at.fhtw.httpserver.server.Request;
 import at.fhtw.httpserver.server.Response;
 import at.fhtw.httpserver.server.Service;
 import at.fhtw.mtcg.dto.CardDto;
+import at.fhtw.mtcg.exceptions.CardNotFoundException;
 import at.fhtw.mtcg.exceptions.NotFourCardsException;
+import at.fhtw.mtcg.exceptions.UserNotAuthorizedException;
 import at.fhtw.mtcg.service.DeckService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -49,6 +51,9 @@ public class DeckController extends Controller implements Service {
 
     private Response handlePut(Request request) {
         List<String> cardsToPutInDeck;
+        HeaderMap headerMap = request.getHeaderMap();
+        String authorizationHeader = headerMap.getHeader("Authorization");
+        String authorizationHeaderToken = authorizationHeader.substring(7);
         try {
 
             cardsToPutInDeck = this.getObjectMapper().readValue(request.getBody(), new TypeReference<>() {
@@ -62,12 +67,25 @@ public class DeckController extends Controller implements Service {
             );
         }
         try {
-            deckService.upsertDeck(cardsToPutInDeck);
+            deckService.upsertDeck(cardsToPutInDeck, authorizationHeaderToken);
         } catch (NotFourCardsException e) {
             return new Response(
                     HttpStatus.BAD_REQUEST,
                     ContentType.JSON,
                     "Not four Cards"
+            );
+        } catch (CardNotFoundException e) {
+            return new Response(
+                    HttpStatus.NOT_FOUND,
+                    ContentType.JSON,
+                    "Card with Id " + e.getMessage() + " couldn't be found"
+
+            );
+        } catch (UserNotAuthorizedException e) {
+            return new Response(
+                    HttpStatus.FORBIDDEN,
+                    ContentType.JSON,
+                    "User not authorized for this Card"
             );
         }
         return new Response(

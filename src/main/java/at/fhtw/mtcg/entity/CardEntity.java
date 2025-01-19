@@ -4,9 +4,19 @@ public class CardEntity {
 
     private String name;
 
+    private String username;
+
     private float damage;
 
     private String id;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getId() {
         return id;
