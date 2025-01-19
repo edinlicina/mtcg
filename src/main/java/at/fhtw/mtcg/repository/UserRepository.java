@@ -69,5 +69,22 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public void updateUser(String name, String image, String bio, String username) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = unitOfWork.prepareStatement("UPDATE user_data SET name = ?, image = ?, bio = ? WHERE username = ?");
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, image);
+            preparedStatement.setString(3, bio);
+            preparedStatement.setString(4, username);
+            preparedStatement.executeUpdate();
+            unitOfWork.commitTransaction();
+        } catch (SQLException e) {
+            unitOfWork.rollbackTransaction();
+            throw new RuntimeException(e);
+        }
+    }
 }
 

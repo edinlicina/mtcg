@@ -3,6 +3,9 @@ CREATE TABLE user_data
     username VARCHAR UNIQUE,
     password VARCHAR NOT NULL,
     coins    INT     NOT NULL,
+    name  VARCHAR NULL,
+    bio   VARCHAR NULL,
+    image VARCHAR NULL,
     PRIMARY KEY (username)
 );
 

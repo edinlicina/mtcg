@@ -1,10 +1,12 @@
 package at.fhtw.mtcg.service;
 
-import at.fhtw.mtcg.exceptions.InvalidPasswordException;
-import at.fhtw.mtcg.exceptions.NotUniqueException;
 import at.fhtw.mtcg.dto.CreateUserDto;
 import at.fhtw.mtcg.dto.LoginUserDto;
+import at.fhtw.mtcg.dto.UpdateUserDto;
 import at.fhtw.mtcg.entity.UserEntity;
+import at.fhtw.mtcg.exceptions.InvalidPasswordException;
+import at.fhtw.mtcg.exceptions.NotUniqueException;
+import at.fhtw.mtcg.exceptions.UserNotAuthorizedException;
 import at.fhtw.mtcg.repository.TokenRepository;
 import at.fhtw.mtcg.repository.UserRepository;
 
@@ -40,6 +42,14 @@ public class UserService {
 
     public boolean isValidToken(String token){
         return tokenRepository.isValidToken(token);
+    }
+
+    public void updateUser(UpdateUserDto dto, String userToUpdate, String token) {
+        String currentUser = tokenRepository.getUsernameByToken(token);
+        if (!currentUser.equals(userToUpdate)) {
+            throw new UserNotAuthorizedException();
+        }
+        userRepository.updateUser(dto.name, dto.image, dto.bio, currentUser);
     }
 }
 
