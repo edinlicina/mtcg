@@ -25,11 +25,26 @@ CREATE TABLE card
     name     VARCHAR        NOT NULL,
     damage   FLOAT          NOT NULL,
     id       VARCHAR UNIQUE NOT NULL,
+    trade_id VARCHAR UNIQUE NULL,
     username VARCHAR NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (username) REFERENCES user_data (username)
 
+
 );
+
+CREATE TABLE trade
+(
+    id      VARCHAR UNIQUE NOT NULL,
+    type    VARCHAR        NOT NULL,
+    min_dmg FLOAT          NOT NULL,
+    card_id VARCHAR UNIQUE NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (card_id) REFERENCES card (id)
+);
+
+ALTER TABLE card
+    ADD FOREIGN KEY (trade_id) REFERENCES trade (id);
 
 CREATE TABLE package
 (
